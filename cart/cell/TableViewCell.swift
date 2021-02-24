@@ -8,7 +8,7 @@ class TableViewCell: UITableViewCell {
     
     var id=0
     var product:Product?
-    var delegate: MainViewController?
+    var delegate: MainViewControllerDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()

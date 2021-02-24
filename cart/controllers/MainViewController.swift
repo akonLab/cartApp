@@ -13,10 +13,14 @@ class MainViewController: UIViewController {
     
     let cellId="cellId"
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.isHidden=true
         appendArrAtStart()
+        
+        //collection
+        collectionView.isHidden=true
         
         let layout=UICollectionViewFlowLayout()
         layout.itemSize=CGSize(width: 200, height: 150)
@@ -26,10 +30,14 @@ class MainViewController: UIViewController {
         collectionView.dataSource=self
         collectionView.register(UINib(nibName: "CollectionViewCell", bundle: nil),forCellWithReuseIdentifier: "collCellId")
         
+        //table
         tableView.delegate=self
         tableView.dataSource = self
         
         tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
+        
+        let vcCart=storyboard?.instantiateViewController(identifier: "cartId") as! CartViewController
+        vcCart.mainDelegate=self
     }
     
     @IBAction func radioViewBtn(_ sender: Any) {//work
@@ -68,23 +76,23 @@ protocol MainViewControllerDelegate {
     func showProduct(_ id:Int)
     func addProductToCart(_ item:Product)
     func showCart()
+    func getCartProduct() -> [Product]
 }
 
 extension MainViewController: MainViewControllerDelegate{
     func addProductToCart(_ item:Product){//work
-        let vcCart=storyboard?.instantiateViewController(identifier: "cartId") as! CartViewController
-        vcCart.products.append(item)
-        print(vcCart.products)
-//        cartProducts.append(item)
-//        //        print("\(item.title ?? "nothing") was addedd to cart")
-//        tableView.reloadData()
-//        //        print(cartProducts)
+//        let vcCart=storyboard?.instantiateViewController(identifier: "cartId") as! CartViewController
+//        vcCart.products.append(item)
+//        print(vcCart.products)
+        cartProducts.append(item)
+              print("\(item.title ?? "nothing") was addedd to cart")
+        tableView.reloadData()
+              print(cartProducts)
     }
     
     func removeProductFromCart(_ id: Int) {
         cartProducts.remove(at: id)
-        let vcCart=storyboard?.instantiateViewController(identifier: "cartId") as! CartViewController
-        vcCart.tableView.reloadData()
+       
     }
     func showCart( ) {
         let vcCart=storyboard?.instantiateViewController(identifier: "cartId") as! CartViewController
@@ -103,6 +111,11 @@ extension MainViewController: MainViewControllerDelegate{
         vcProd.delegate=self
         
         navigationController?.pushViewController(vcProd, animated: true) //go to (rediredt to) EditTaskPage
+    }
+    func getCartProduct() -> [Product] {
+        let vcCart=storyboard?.instantiateViewController(identifier: "cartId") as! CartViewController
+        vcCart.mainDelegate=self
+        return cartProducts
     }
     
 }

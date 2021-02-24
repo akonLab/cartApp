@@ -5,30 +5,31 @@ class CartViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var products = [Product]()
     let cellId="cartCellId"
-    var mainDelegate:MainViewController?
+    var mainDelegate:MainViewControllerDelegate?
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
       
-        appendArrAtStart()
+       // products=mainDelegate?.getCartProduct() ??  [Product(title: "no product", desc: "v", price: 0)]
+        tableView.reloadData()
+        
+        //appendArrAtStart()
+        // products=mainDelegate!.cartProducts
         
         tableView.delegate=self
         tableView.dataSource = self
         
-       // products=mainDelegate!.cartProducts
-        
         tableView.register(UINib(nibName: "CartViewCell", bundle: nil), forCellReuseIdentifier: cellId)
-  
-        products.append(Product(title: "lol",
-                                                       desc: "socks with pupping unicorn",
-                                                       price: 11))
     }
     
     
     
     func appendArrAtStart(){
         products.append(Product(title: "pink socks",
+                                desc: "socks with pupping unicorn",
+                                price: 11))
+        products.append(Product(title: "lol",
                                 desc: "socks with pupping unicorn",
                                 price: 11))
     }
